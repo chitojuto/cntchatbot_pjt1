@@ -7,8 +7,12 @@ import sys
 import json
 from pathlib import Path
 from src.s6_search_engine import SearchEngine
-from src.s4_embedding_manager import EmbeddingManager
+from src.s5_embedding_manager import EmbeddingManager
 import faiss
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def load_components(institution="kb"):
     """저장된 컴포넌트들 로드"""
@@ -41,12 +45,15 @@ def test_search_engine(institution="kb"):
     
     # 1. 컴포넌트 로드
     faiss_index, metadata, chunks = load_components(institution)
-    
-    # 2. EmbeddingManager 초기화
+
     print("🔧 EmbeddingManager 초기화...")
-    embedding_manager = EmbeddingManager()
-    print()
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY가 .env 파일에 없습니다!")
     
+    embedding_manager = EmbeddingManager(openai_api_key=api_key)
+    print()
+       
     # 3. SearchEngine 초기화
     print("🔧 SearchEngine 초기화...")
     search_engine = SearchEngine(
