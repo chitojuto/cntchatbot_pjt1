@@ -1,9 +1,14 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
+
+plt.rcParams['font.family'] = 'NanumGothic'
+plt.rcParams['axes.unicode_minus'] = False
+
 
 # 페이지 설정
 st.set_page_config(
